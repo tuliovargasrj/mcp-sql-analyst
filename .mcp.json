@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "sql-analyst": {
+      "command": "node",
+      "args": ["dist/index.js", "data/sample.db"]
+    }
+  }
+}

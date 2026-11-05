@@ -1,0 +1,44 @@
+{
+  "name": "mcp-sql-analyst",
+  "version": "0.1.0",
+  "description": "Read-only MCP server that lets an AI assistant query a SQLite database safely",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "sqlite",
+    "llm",
+    "ai-tools",
+    "typescript"
+  ],
+  "homepage": "https://github.com/tuliovargasrj/mcp-sql-analyst#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tuliovargasrj/mcp-sql-analyst.git"
+  },
+  "bugs": "https://github.com/tuliovargasrj/mcp-sql-analyst/issues",
+  "license": "MIT",
+  "author": "Tulio Vargas",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=24.10.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "seed": "node dist/seed.js",
+    "pretest": "npm run build",
+    "test": "vitest run",
+    "lint": "biome check . && tsc -p test"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.6.5",
+    "@types/node": "^24.19.2",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0"
+  }
+}
