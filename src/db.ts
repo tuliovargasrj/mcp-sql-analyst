@@ -67,15 +67,17 @@ export function openReadOnly(path: string): DatabaseSync {
   return db;
 }
 
+const EMPTY_QUERY = "The query is empty: send one SELECT statement.";
+
 /**
- * Blank text or a lone comment compiles to nothing. `prepare` still succeeds,
- * and the only sign is that every later access to the statement throws.
+ * Blank text or a lone comment compiles to nothing. Before Node 24.22, `prepare`
+ * still succeeds, and the only sign is that later access to the statement throws.
  */
 function compiledLength(statement: StatementSync): number {
   try {
     return statement.sourceSQL.length;
   } catch {
-    throw new Error("The query is empty: send one SELECT statement.");
+    throw new Error(EMPTY_QUERY);
   }
 }
 
@@ -84,8 +86,12 @@ function prepareSingleStatement(db: DatabaseSync, sql: string): StatementSync {
   try {
     statement = db.prepare(sql);
   } catch (error) {
-    if ((error as { errcode?: number }).errcode === SQLITE_AUTH) {
+    const { code, errcode } = error as { code?: string; errcode?: number };
+    if (errcode === SQLITE_AUTH) {
       throw new Error("Rejected: only read-only SELECT statements are allowed.");
+    }
+    if (code === "ERR_INVALID_ARG_VALUE") {
+      throw new Error(EMPTY_QUERY);
     }
     throw error;
   }
